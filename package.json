@@ -62,7 +62,8 @@
     "webpack-cli": "^4.10.0"
   },
   "scripts": {
-    "build": "webpack --mode production",
+    "build": "webpack --mode production && npm run copyFiles",
+    "copyFiles": "cp build/ckeditor.js docs/ckeditor.js",
     "postbuild": "tsc --declaration --declarationDir build --stripInternal --emitDeclarationOnly"
   }
 }
