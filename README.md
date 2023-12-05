@@ -1,7 +1,7 @@
 CKEditor&nbsp;5 Classic Editor Full Free Build
 ========================================
 
-The classic editor build for CKEditor&nbsp;5. Read more about the [classic editor build](https://ckeditor.com/docs/ckeditor5/latest/installation/getting-started/predefined-builds.html#classic-editor) and see the [demo](https://ckeditor.com/docs/ckeditor5/latest/examples/builds/classic-editor.html).
+The classic editor build for CKEditor&nbsp;5. Read more about the [classic editor build](https://ckeditor.com/docs/ckeditor5/latest/installation/getting-started/predefined-builds.html#classic-editor) and see the [demo](https://binay7587.github.io/ckeditor5-full-free).
 
 ![CKEditor&nbsp;5 Classic Editor Full Free Build Screenshot](./docs/ckeditor-full-free-demo.png)
 
