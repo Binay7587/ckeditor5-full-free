@@ -1,10 +1,6 @@
 CKEditor&nbsp;5 Classic Editor Full Free Build
 ========================================
 
-[![npm version](https://badge.fury.io/js/%40ckeditor%2Fckeditor5-build-classic.svg)](https://www.npmjs.com/package/@binay7587/ckeditor5-full-free)
-[![Coverage Status](https://coveralls.io/repos/github/binay7587/ckeditor5-full-free/badge.svg?branch=master)](https://coveralls.io/github/binay7587/ckeditor5-full-free?branch=master)
-[![Build Status](https://travis-ci.com/binay7587/ckeditor5-full-free.svg?branch=master)](https://app.travis-ci.com/github/binay7587/ckeditor5-full-free)
-
 The classic editor build for CKEditor&nbsp;5. Read more about the [classic editor build](https://ckeditor.com/docs/ckeditor5/latest/installation/getting-started/predefined-builds.html#classic-editor) and see the [demo](https://ckeditor.com/docs/ckeditor5/latest/examples/builds/classic-editor.html).
 
 ![CKEditor&nbsp;5 classic editor build screenshot](https://c.cksource.com/a/1/img/npm/ckeditor5-build-classic.png)
