@@ -14,7 +14,7 @@ import type { EditorConfig } from '@ckeditor/ckeditor5-core';
 import { Essentials } from '@ckeditor/ckeditor5-essentials';
 import { FindAndReplace } from '@ckeditor/ckeditor5-find-and-replace';
 import { FontBackgroundColor, FontColor, FontFamily, FontSize } from '@ckeditor/ckeditor5-font';
-import { Heading, Title } from '@ckeditor/ckeditor5-heading';
+import { Heading } from '@ckeditor/ckeditor5-heading';
 import { Highlight } from '@ckeditor/ckeditor5-highlight';
 import { HorizontalLine } from '@ckeditor/ckeditor5-horizontal-line';
 import { HtmlEmbed } from '@ckeditor/ckeditor5-html-embed';
@@ -39,12 +39,14 @@ import { Table, TableCaption, TableCellProperties, TableColumnResize, TablePrope
 import { TextTransformation } from '@ckeditor/ckeditor5-typing';
 import { SimpleUploadAdapter } from '@ckeditor/ckeditor5-upload';
 import { WordCount } from '@ckeditor/ckeditor5-word-count';
+import { ExportPdf } from '@ckeditor/ckeditor5-export-pdf';
+import { ExportWord } from '@ckeditor/ckeditor5-export-word';
 /**
  * Enrich the special characters plugin with emojis.
  */
 declare function SpecialCharactersEmoji(editor: any): void;
 declare class Editor extends ClassicEditor {
-    static builtinPlugins: (typeof Alignment | typeof AutoImage | typeof AutoLink | typeof Autoformat | typeof Autosave | typeof BlockQuote | typeof Bold | typeof CloudServices | typeof Code | typeof CodeBlock | typeof Essentials | typeof FindAndReplace | typeof FontBackgroundColor | typeof FontColor | typeof FontFamily | typeof FontSize | typeof GeneralHtmlSupport | typeof Heading | typeof Highlight | typeof HorizontalLine | typeof HtmlComment | typeof HtmlEmbed | typeof Image | typeof ImageCaption | typeof ImageInsert | typeof ImageResize | typeof ImageStyle | typeof ImageToolbar | typeof ImageUpload | typeof Indent | typeof IndentBlock | typeof Italic | typeof Link | typeof LinkImage | typeof List | typeof ListProperties | typeof Markdown | typeof MediaEmbed | typeof MediaEmbedToolbar | typeof Mention | typeof PageBreak | typeof Paragraph | typeof PasteFromOffice | typeof RemoveFormat | typeof SelectAll | typeof ShowBlocks | typeof SimpleUploadAdapter | typeof SpecialCharacters | typeof SpecialCharactersArrows | typeof SpecialCharactersCurrency | typeof SpecialCharactersEssentials | typeof SpecialCharactersLatin | typeof SpecialCharactersMathematical | typeof SpecialCharactersText | typeof SpecialCharactersEmoji | typeof StandardEditingMode | typeof Strikethrough | typeof Style | typeof Subscript | typeof Superscript | typeof Table | typeof TableCaption | typeof TableCellProperties | typeof TableColumnResize | typeof TableProperties | typeof TableToolbar | typeof TextTransformation | typeof Title | typeof Underline | typeof WordCount)[];
+    static builtinPlugins: (typeof Alignment | typeof AutoImage | typeof AutoLink | typeof Autoformat | typeof Autosave | typeof BlockQuote | typeof Bold | typeof CloudServices | typeof Code | typeof CodeBlock | typeof Essentials | typeof FindAndReplace | typeof FontBackgroundColor | typeof FontColor | typeof FontFamily | typeof FontSize | typeof GeneralHtmlSupport | typeof Heading | typeof Highlight | typeof HorizontalLine | typeof HtmlComment | typeof HtmlEmbed | typeof Image | typeof ImageCaption | typeof ImageInsert | typeof ImageResize | typeof ImageStyle | typeof ImageToolbar | typeof ImageUpload | typeof Indent | typeof IndentBlock | typeof Italic | typeof Link | typeof LinkImage | typeof List | typeof ListProperties | typeof Markdown | typeof MediaEmbed | typeof MediaEmbedToolbar | typeof Mention | typeof PageBreak | typeof Paragraph | typeof PasteFromOffice | typeof RemoveFormat | typeof SelectAll | typeof ShowBlocks | typeof SimpleUploadAdapter | typeof SpecialCharacters | typeof SpecialCharactersArrows | typeof SpecialCharactersCurrency | typeof SpecialCharactersEssentials | typeof SpecialCharactersLatin | typeof SpecialCharactersMathematical | typeof SpecialCharactersText | typeof SpecialCharactersEmoji | typeof StandardEditingMode | typeof Strikethrough | typeof Style | typeof Subscript | typeof Superscript | typeof Table | typeof TableCaption | typeof TableCellProperties | typeof TableColumnResize | typeof TableProperties | typeof TableToolbar | typeof TextTransformation | typeof Underline | typeof WordCount | typeof ExportPdf | typeof ExportWord)[];
     static defaultConfig: EditorConfig;
 }
 export default Editor;

@@ -73,6 +73,8 @@ import {
 import { TextTransformation } from '@ckeditor/ckeditor5-typing';
 import { SimpleUploadAdapter } from '@ckeditor/ckeditor5-upload';
 import { WordCount } from '@ckeditor/ckeditor5-word-count';
+import { ExportPdf } from '@ckeditor/ckeditor5-export-pdf';
+import { ExportWord } from '@ckeditor/ckeditor5-export-word';
 
 // You can read more about extending the build with additional plugins in the "Installing plugins" guide.
 // See https://ckeditor.com/docs/ckeditor5/latest/installation/plugins/installing-plugins.html for details.
@@ -379,9 +381,12 @@ class Editor extends ClassicEditor {
         TableProperties,
         TableToolbar,
         TextTransformation,
-        Title,
+        // Title,
         Underline,
-        WordCount
+        WordCount,
+        ExportPdf,
+        ExportWord,
+        // ImportWord,
     ];
 
     public static override defaultConfig: EditorConfig = {
@@ -661,6 +666,33 @@ class Editor extends ClassicEditor {
                 'tableCellProperties',
                 'toggleTableCaption',
             ],
+        },
+        exportPdf: {
+            stylesheets: [
+                'https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500&display=swap',
+                'https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap',
+            ],
+            fileName: 'document.pdf',
+            converterOptions: {
+                format: 'A4',
+                margin_top: '20mm',
+                margin_bottom: '20mm',
+                margin_right: '12mm',
+                margin_left: '12mm',
+                page_orientation: 'portrait'
+            },
+            converterUrl: 'https://pdf-converter.cke-cs.com/v1/convert',
+        },
+        exportWord: {
+            converterUrl: 'https://docx-converter.cke-cs.com/v1/convert',
+            fileName: 'document.docx',
+            converterOptions: {
+                format: 'A4', // Default value, you don't need to specify it explicitly for A4.
+                margin_top: '20mm',
+                margin_bottom: '20mm',
+                margin_right: '12mm',
+                margin_left: '12mm'
+            }
         },
         // This value must be kept in sync with the language defined in webpack.config.js.
         language: 'en'

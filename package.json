@@ -17,6 +17,8 @@
     "@ckeditor/ckeditor5-code-block": "40.1.0",
     "@ckeditor/ckeditor5-editor-classic": "40.1.0",
     "@ckeditor/ckeditor5-essentials": "40.1.0",
+    "@ckeditor/ckeditor5-export-pdf": "^40.1.0",
+    "@ckeditor/ckeditor5-export-word": "^40.1.0",
     "@ckeditor/ckeditor5-find-and-replace": "40.1.0",
     "@ckeditor/ckeditor5-font": "40.1.0",
     "@ckeditor/ckeditor5-heading": "40.1.0",
