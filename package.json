@@ -83,10 +83,8 @@
   "main": "./build/ckeditor.js",
   "types": "./build/ckeditor.d.ts",
   "publishConfig": {
-    "access": "public",
-    "registry": "https://npm.pkg.github.com/binay7587"
+    "@binay7587:registry": "https://npm.pkg.github.com"
   },
-  
   "dependencies": {
     "@ckeditor/ckeditor5-alignment": "40.2.0",
     "@ckeditor/ckeditor5-autoformat": "40.2.0",
