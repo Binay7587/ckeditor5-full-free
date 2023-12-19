@@ -87,7 +87,8 @@
   "main": "./build/ckeditor.js",
   "types": "./build/ckeditor.d.ts",
   "publishConfig": {
-    "@binay7587:registry": "https://npm.pkg.github.com"
+    "access": "public",
+    "registry": "https://npm.pkg.github.com"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-alignment": "40.2.0",
