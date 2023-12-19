@@ -24,7 +24,7 @@ import type { EditorConfig } from '@ckeditor/ckeditor5-core';
 import { Essentials } from '@ckeditor/ckeditor5-essentials';
 import { FindAndReplace } from '@ckeditor/ckeditor5-find-and-replace';
 import { FontBackgroundColor, FontColor, FontFamily, FontSize } from '@ckeditor/ckeditor5-font';
-import { Heading, Title } from '@ckeditor/ckeditor5-heading';
+import { Heading } from '@ckeditor/ckeditor5-heading';
 import { Highlight } from '@ckeditor/ckeditor5-highlight';
 import { HorizontalLine } from '@ckeditor/ckeditor5-horizontal-line';
 import { HtmlEmbed } from '@ckeditor/ckeditor5-html-embed';
@@ -42,7 +42,6 @@ import {
 import { Indent, IndentBlock } from '@ckeditor/ckeditor5-indent';
 import { AutoLink, Link, LinkImage } from '@ckeditor/ckeditor5-link';
 import { List, ListProperties } from '@ckeditor/ckeditor5-list';
-import { Markdown } from '@ckeditor/ckeditor5-markdown-gfm';
 import { MediaEmbed, MediaEmbedToolbar } from '@ckeditor/ckeditor5-media-embed';
 import { Mention } from '@ckeditor/ckeditor5-mention';
 import { PageBreak } from '@ckeditor/ckeditor5-page-break';
@@ -350,7 +349,6 @@ class Editor extends ClassicEditor {
         LinkImage,
         List,
         ListProperties,
-        Markdown,
         MediaEmbed,
         MediaEmbedToolbar,
         Mention,
@@ -391,13 +389,13 @@ class Editor extends ClassicEditor {
 
     public static override defaultConfig: EditorConfig = {
         toolbar: {
-            shouldNotGroupWhenFull: true,
+            // shouldNotGroupWhenFull: true,
             items: [
                 // --- Document-wide tools ----------------------------------------------------------------------
                 'undo',
                 'redo',
                 '|',
-                'importWord',
+                // 'importWord',
                 'exportWord',
                 'exportPdf',
                 '|',
@@ -417,7 +415,7 @@ class Editor extends ClassicEditor {
                 // 'ckbox',
                 'insertTable',
                 'blockQuote',
-                'mediaEmbed',
+                // 'mediaEmbed',
                 'codeBlock',
                 'pageBreak',
                 'horizontalLine',
@@ -446,9 +444,9 @@ class Editor extends ClassicEditor {
                         'superscript',
                         'subscript',
                         'code',
-                        '|',
-                        'textPartLanguage',
-                        '|',
+                        // '|',
+                        // 'textPartLanguage',
+                        // '|',
                     ],
                 },
                 'removeFormat',
@@ -461,7 +459,7 @@ class Editor extends ClassicEditor {
                 // --- Lists and indentation --------------------------------------------------------------------
                 'bulletedList',
                 'numberedList',
-                'todoList',
+                // 'todoList',
                 '|',
                 'outdent',
                 'indent',
@@ -525,28 +523,14 @@ class Editor extends ClassicEditor {
         },
         htmlSupport: {
             allow: [
-                // Enables all HTML features.
                 {
                     name: /.*/,
                     attributes: true,
                     classes: true,
-                    styles: true,
-                },
-            ],
-            disallow: [
-                {
-                    attributes: [
-                        { key: /^on(.*)/i, value: true },
-                        {
-                            key: /.*/,
-                            value: /(\b)(on\S+)(\s*)=|javascript:|(<\s*)(\/*)script/i,
-                        },
-                        { key: /.*/, value: /data:(?!image\/(png|jpeg|gif|webp))/i },
-                    ],
-                },
-                { name: 'script' },
-            ],
-        },
+                    styles: true
+                }
+            ]
+        },        
         image: {
             styles: {
                 options: [
@@ -695,7 +679,7 @@ class Editor extends ClassicEditor {
             }
         },
         // This value must be kept in sync with the language defined in webpack.config.js.
-        language: 'en'
+        language: 'en',
     };
 }
 
