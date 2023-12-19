@@ -46,6 +46,7 @@ import { MediaEmbed, MediaEmbedToolbar } from '@ckeditor/ckeditor5-media-embed';
 import { Mention } from '@ckeditor/ckeditor5-mention';
 import { PageBreak } from '@ckeditor/ckeditor5-page-break';
 import { Paragraph } from '@ckeditor/ckeditor5-paragraph';
+import { PasteFromMarkdownExperimental } from '@ckeditor/ckeditor5-markdown-gfm';
 import { PasteFromOffice } from '@ckeditor/ckeditor5-paste-from-office';
 import { RemoveFormat } from '@ckeditor/ckeditor5-remove-format';
 import { StandardEditingMode } from '@ckeditor/ckeditor5-restricted-editing';
@@ -354,6 +355,7 @@ class Editor extends ClassicEditor {
         Mention,
         PageBreak,
         Paragraph,
+        PasteFromMarkdownExperimental,
         PasteFromOffice,
         RemoveFormat,
         SelectAll,
@@ -389,7 +391,7 @@ class Editor extends ClassicEditor {
 
     public static override defaultConfig: EditorConfig = {
         toolbar: {
-            // shouldNotGroupWhenFull: true,
+            shouldNotGroupWhenFull: true,
             items: [
                 // --- Document-wide tools ----------------------------------------------------------------------
                 'undo',
