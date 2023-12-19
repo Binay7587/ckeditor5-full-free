@@ -79,6 +79,10 @@
   ],
   "version": "0.0.7",
   "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Binay7587/ckeditor5-full-free.git"
+  },
   "private": false,
   "main": "./build/ckeditor.js",
   "types": "./build/ckeditor.d.ts",
