@@ -123,6 +123,7 @@
     "@ckeditor/ckeditor5-restricted-editing": "40.2.0",
     "@ckeditor/ckeditor5-select-all": "40.2.0",
     "@ckeditor/ckeditor5-show-blocks": "40.2.0",
+    "@ckeditor/ckeditor5-source-editing": "^40.2.0",
     "@ckeditor/ckeditor5-special-characters": "40.2.0",
     "@ckeditor/ckeditor5-style": "40.2.0",
     "@ckeditor/ckeditor5-table": "40.2.0",

@@ -75,6 +75,7 @@ import { SimpleUploadAdapter } from '@ckeditor/ckeditor5-upload';
 import { WordCount } from '@ckeditor/ckeditor5-word-count';
 import { ExportPdf } from '@ckeditor/ckeditor5-export-pdf';
 import { ExportWord } from '@ckeditor/ckeditor5-export-word';
+import { SourceEditing } from '@ckeditor/ckeditor5-source-editing';
 
 // You can read more about extending the build with additional plugins in the "Installing plugins" guide.
 // See https://ckeditor.com/docs/ckeditor5/latest/installation/plugins/installing-plugins.html for details.
@@ -387,6 +388,7 @@ class Editor extends ClassicEditor {
         ExportPdf,
         ExportWord,
         // ImportWord,
+        SourceEditing,
     ];
 
     public static override defaultConfig: EditorConfig = {
@@ -400,6 +402,7 @@ class Editor extends ClassicEditor {
                 // 'importWord',
                 'exportWord',
                 'exportPdf',
+                'sourceEditing',
                 '|',
                 'findAndReplace',
                 'selectAll',
