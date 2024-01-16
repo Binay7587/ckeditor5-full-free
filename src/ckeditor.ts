@@ -416,11 +416,11 @@ class Editor extends ClassicEditor {
                 // --- "Insertables" ----------------------------------------------------------------------------
 
                 'link',
-                'insertImage',
+                'mediaEmbed',
+				'imageInsert',
                 // 'ckbox',
                 'insertTable',
                 'blockQuote',
-                // 'mediaEmbed',
                 'codeBlock',
                 'pageBreak',
                 'horizontalLine',
@@ -535,47 +535,18 @@ class Editor extends ClassicEditor {
                     styles: true
                 }
             ]
-        },        
+        },
         image: {
-            styles: {
-                options: [
-                    'inline', 'alignLeft', 'alignRight',
-                    'alignCenter', 'alignBlockLeft', 'alignBlockRight',
-                    'block', 'side'
-                ]
-            },
-            resizeOptions: [
-                {
-                    name: 'resizeImage:original',
-                    label: 'Default image width',
-                    value: null,
-                },
-                {
-                    name: 'resizeImage:50',
-                    label: '50% page width',
-                    value: '50',
-                },
-                {
-                    name: 'resizeImage:75',
-                    label: '75% page width',
-                    value: '75',
-                },
-            ],
             toolbar: [
                 'imageTextAlternative',
                 'toggleImageCaption',
                 '|',
-                'imageStyle:inline',
                 'imageStyle:wrapText',
                 'imageStyle:breakText',
-                'imageStyle:side',
                 '|',
                 'resizeImage',
             ],
-            insert: {
-                integrations: ['insertImageViaUrl'],
-            },
-        },     
+		},     
         list: {
             properties: {
                 styles: true,

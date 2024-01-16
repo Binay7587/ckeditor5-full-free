@@ -77,7 +77,7 @@
     "ckeditor5-mention",
     "ckeditor5-paste-from-office"
   ],
-  "version": "0.0.7",
+  "version": "0.0.8",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
@@ -149,7 +149,7 @@
   },
   "scripts": {
     "build": "webpack --mode production && npm run copyFiles",
-    "copyFiles": "cp build/ckeditor.js docs/ckeditor.js",
+    "copyFiles": "copy build\\ckeditor.js docs\\ckeditor.js",
     "postbuild": "tsc --declaration --declarationDir build --stripInternal --emitDeclarationOnly"
   }
 }
