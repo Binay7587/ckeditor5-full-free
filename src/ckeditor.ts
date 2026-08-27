@@ -584,9 +584,10 @@ class Editor extends ClassicEditor {
             addTargetToExternalLinks: true,
             defaultProtocol: 'https://',
         },
-        root: {
-            placeholder: 'Type or paste your content here!',
-        },
+        // Keep this default at the top level so the build remains compatible with
+        // @ckeditor/ckeditor5-react, which supplies `roots.main.initialData` for its
+        // `data` prop. CKEditor 5 normalizes this value into the active root.
+        placeholder: 'Type or paste your content here!',
         style: {
             definitions: [
                 {
