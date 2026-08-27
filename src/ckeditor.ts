@@ -3,79 +3,84 @@
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
-import { ClassicEditor } from '@ckeditor/ckeditor5-editor-classic';
-
-import { Alignment } from '@ckeditor/ckeditor5-alignment';
-import { Autoformat } from '@ckeditor/ckeditor5-autoformat';
-import { Autosave } from '@ckeditor/ckeditor5-autosave';
 import {
-    Bold,
-    Code,
-    Italic,
-    Strikethrough,
-    Subscript,
-    Superscript,
-    Underline
-} from '@ckeditor/ckeditor5-basic-styles';
-import { BlockQuote } from '@ckeditor/ckeditor5-block-quote';
-import { CloudServices } from '@ckeditor/ckeditor5-cloud-services';
-import { CodeBlock } from '@ckeditor/ckeditor5-code-block';
-import type { EditorConfig } from '@ckeditor/ckeditor5-core';
-import { Essentials } from '@ckeditor/ckeditor5-essentials';
-import { FindAndReplace } from '@ckeditor/ckeditor5-find-and-replace';
-import { FontBackgroundColor, FontColor, FontFamily, FontSize } from '@ckeditor/ckeditor5-font';
-import { Heading } from '@ckeditor/ckeditor5-heading';
-import { Highlight } from '@ckeditor/ckeditor5-highlight';
-import { HorizontalLine } from '@ckeditor/ckeditor5-horizontal-line';
-import { HtmlEmbed } from '@ckeditor/ckeditor5-html-embed';
-import { GeneralHtmlSupport, HtmlComment } from '@ckeditor/ckeditor5-html-support';
-import {
+    Alignment,
+    Autoformat,
     AutoImage,
+    AutoLink,
+    Autosave,
+    BlockQuote,
+    Bold,
+    ClassicEditor,
+    CloudServices,
+    Code,
+    CodeBlock,
+    Essentials,
+    type EditorConfig,
+    FindAndReplace,
+    FontBackgroundColor,
+    FontColor,
+    FontFamily,
+    FontSize,
+    GeneralHtmlSupport,
+    Heading,
+    Highlight,
+    HorizontalLine,
+    HtmlComment,
+    HtmlEmbed,
     Image,
     ImageCaption,
     ImageInsert,
     ImageResize,
     ImageStyle,
     ImageToolbar,
-    ImageUpload
-} from '@ckeditor/ckeditor5-image';
-import { Indent, IndentBlock } from '@ckeditor/ckeditor5-indent';
-import { AutoLink, Link, LinkImage } from '@ckeditor/ckeditor5-link';
-import { List, ListProperties } from '@ckeditor/ckeditor5-list';
-import { MediaEmbed, MediaEmbedToolbar } from '@ckeditor/ckeditor5-media-embed';
-import { Mention } from '@ckeditor/ckeditor5-mention';
-import { PageBreak } from '@ckeditor/ckeditor5-page-break';
-import { Paragraph } from '@ckeditor/ckeditor5-paragraph';
-import { PasteFromMarkdownExperimental } from '@ckeditor/ckeditor5-markdown-gfm';
-import { PasteFromOffice } from '@ckeditor/ckeditor5-paste-from-office';
-import { RemoveFormat } from '@ckeditor/ckeditor5-remove-format';
-import { StandardEditingMode } from '@ckeditor/ckeditor5-restricted-editing';
-import { SelectAll } from '@ckeditor/ckeditor5-select-all';
-import { ShowBlocks } from '@ckeditor/ckeditor5-show-blocks';
-import {
+    ImageUpload,
+    Indent,
+    IndentBlock,
+    Italic,
+    Link,
+    LinkImage,
+    List,
+    ListProperties,
+    MediaEmbed,
+    MediaEmbedToolbar,
+    Mention,
+    PageBreak,
+    Paragraph,
+    PasteFromMarkdownExperimental,
+    PasteFromOffice,
+    Plugin,
+    RemoveFormat,
+    SelectAll,
+    ShowBlocks,
+    SimpleUploadAdapter,
+    SourceEditing,
     SpecialCharacters,
     SpecialCharactersArrows,
     SpecialCharactersCurrency,
     SpecialCharactersEssentials,
     SpecialCharactersLatin,
     SpecialCharactersMathematical,
-    SpecialCharactersText
-} from '@ckeditor/ckeditor5-special-characters';
-import { Style } from '@ckeditor/ckeditor5-style';
-import {
+    SpecialCharactersText,
+    StandardEditingMode,
+    Strikethrough,
+    Style,
+    Subscript,
+    Superscript,
     Table,
     TableCaption,
     TableCellProperties,
     TableColumnResize,
     TableProperties,
-    TableToolbar
-} from '@ckeditor/ckeditor5-table';
-import { TextTransformation } from '@ckeditor/ckeditor5-typing';
-import { SimpleUploadAdapter } from '@ckeditor/ckeditor5-upload';
-import { WordCount } from '@ckeditor/ckeditor5-word-count';
-import { ExportPdf } from '@ckeditor/ckeditor5-export-pdf';
-import { ExportWord } from '@ckeditor/ckeditor5-export-word';
-import { SourceEditing } from '@ckeditor/ckeditor5-source-editing';
+    TableToolbar,
+    TextTransformation,
+    Underline,
+    WordCount
+} from 'ckeditor5';
+import { ExportPdf, ExportWord } from 'ckeditor5-premium-features';
+
+import 'ckeditor5/ckeditor5.css';
+import 'ckeditor5-premium-features/ckeditor5-premium-features.css';
 
 // You can read more about extending the build with additional plugins in the "Installing plugins" guide.
 // See https://ckeditor.com/docs/ckeditor5/latest/installation/plugins/installing-plugins.html for details.
@@ -207,8 +212,14 @@ const REDUCED_MATERIAL_COLORS = [
 /**
  * Enrich the special characters plugin with emojis.
  */
-function SpecialCharactersEmoji(editor: any) {
-    editor.plugins.get('SpecialCharacters').addItems('Emoji', EMOJIS_ARRAY);
+class SpecialCharactersEmoji extends Plugin {
+    public static get pluginName() {
+        return 'SpecialCharactersEmoji' as const;
+    }
+
+    public init(): void {
+        this.editor.plugins.get('SpecialCharacters').addItems('Emoji', EMOJIS_ARRAY);
+    }
 }
 
 const EMOJIS_ARRAY = [
@@ -392,6 +403,9 @@ class Editor extends ClassicEditor {
     ];
 
     public static override defaultConfig: EditorConfig = {
+        // Consumers using Export to PDF/Word must override this with a commercial
+        // self-hosted license key that includes those premium features.
+        licenseKey: 'GPL',
         toolbar: {
             shouldNotGroupWhenFull: true,
             items: [
@@ -547,6 +561,9 @@ class Editor extends ClassicEditor {
                 'resizeImage',
             ],
 		},     
+        mediaEmbed: {
+            toolbar: ['mediaEmbed'],
+        },
         list: {
             properties: {
                 styles: true,
@@ -567,7 +584,9 @@ class Editor extends ClassicEditor {
             addTargetToExternalLinks: true,
             defaultProtocol: 'https://',
         },
-        placeholder: 'Type or paste your content here!',
+        root: {
+            placeholder: 'Type or paste your content here!',
+        },
         style: {
             definitions: [
                 {
@@ -634,24 +653,32 @@ class Editor extends ClassicEditor {
             ],
             fileName: 'document.pdf',
             converterOptions: {
-                format: 'A4',
-                margin_top: '20mm',
-                margin_bottom: '20mm',
-                margin_right: '12mm',
-                margin_left: '12mm',
-                page_orientation: 'portrait'
+                document: {
+                    size: 'A4',
+                    orientation: 'portrait',
+                    margins: {
+                        top: '20mm',
+                        bottom: '20mm',
+                        right: '12mm',
+                        left: '12mm'
+                    }
+                }
             },
-            converterUrl: 'https://pdf-converter.cke-cs.com/v1/convert',
+            converterUrl: 'https://pdf-converter.cke-cs.com/v2/convert/html-pdf',
         },
         exportWord: {
-            converterUrl: 'https://docx-converter.cke-cs.com/v1/convert',
+            converterUrl: 'https://docx-converter.cke-cs.com/v2/convert/html-docx',
             fileName: 'document.docx',
             converterOptions: {
-                format: 'A4', // Default value, you don't need to specify it explicitly for A4.
-                margin_top: '20mm',
-                margin_bottom: '20mm',
-                margin_right: '12mm',
-                margin_left: '12mm'
+                document: {
+                    size: 'A4',
+                    margins: {
+                        top: '20mm',
+                        bottom: '20mm',
+                        right: '12mm',
+                        left: '12mm'
+                    }
+                }
             }
         },
         // This value must be kept in sync with the language defined in webpack.config.js.
