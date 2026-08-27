@@ -1,6 +1,7 @@
 // createDialog().then(config => {
 //     return ClassicEditor
-//         .create(document.querySelector('.editor'), {
+//         .create({
+//             attachTo: document.querySelector('.editor'),
 //             licenseKey: config.licenseKey
 //         })
 //         .then(editor => {
@@ -12,7 +13,9 @@
 // });
 
 ClassicEditor
-    .create(document.querySelector('.editor'))
+    .create({
+        attachTo: document.querySelector('.editor')
+    })
     .then(editor => {
         window.editor = editor;
     })

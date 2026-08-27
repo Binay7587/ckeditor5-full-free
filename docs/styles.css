@@ -14,6 +14,14 @@
 	--ck-sample-editor-z-index: 10;
 }
 
+/* CKEditor 5 v46+ defines content typography through custom properties. Keep the demo's established appearance. */
+html:root {
+	--ck-content-font-family: sans-serif, Arial, Verdana, "Trebuchet MS", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+	--ck-content-font-size: 1em;
+	--ck-content-font-color: #2D3A4A;
+	--ck-content-line-height: 1.6;
+}
+
 /* --------- EDITOR STYLES  ---------------------------------------------------------------------------------------- */
 
 .editor__editable,

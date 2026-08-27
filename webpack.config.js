@@ -8,9 +8,6 @@
 /* eslint-env node */
 
 const path = require( 'path' );
-const webpack = require( 'webpack' );
-const { bundler, styles } = require( '@ckeditor/ckeditor5-dev-utils' );
-const { CKEditorTranslationsPlugin } = require( '@ckeditor/ckeditor5-dev-translations' );
 const TerserWebpackPlugin = require( 'terser-webpack-plugin' );
 
 module.exports = {
@@ -21,20 +18,25 @@ module.exports = {
 
 	output: {
 		// The name under which the editor will be exported.
-		library: 'ClassicEditor',
+		library: {
+			name: 'ClassicEditor',
+			type: 'umd',
+			export: 'default'
+		},
 
 		path: path.resolve( __dirname, 'build' ),
 		filename: 'ckeditor.js',
-		libraryTarget: 'umd',
-		libraryExport: 'default'
+		globalObject: 'this'
 	},
 
 	optimization: {
 		minimizer: [
 			new TerserWebpackPlugin( {
-				sourceMap: true,
 				terserOptions: {
-					output: {
+					// CKEditor premium packages contain protected code that cannot be
+					// processed safely by Terser's compression transforms.
+					compress: false,
+					format: {
 						// Preserve CKEditor 5 license comments.
 						comments: /^!/
 					}
@@ -44,28 +46,12 @@ module.exports = {
 		]
 	},
 
-	plugins: [
-		// new CKEditorTranslationsPlugin( {
-		// 	// UI language. Language codes follow the https://en.wikipedia.org/wiki/ISO_639-1 format.
-		// 	// When changing the built-in language, remember to also change it in the editor's configuration (src/ckeditor.ts).
-		// 	language: 'en',
-		// 	additionalLanguages: 'all'
-		// } ),
-		// new webpack.BannerPlugin( {
-		// 	banner: bundler.getLicenseBanner(),
-		// 	raw: true
-		// } )
-	],
-
 	resolve: {
 		extensions: [ '.ts', '.js', '.json' ]
 	},
 
 	module: {
 		rules: [ {
-			test: /\.svg$/,
-			use: [ 'raw-loader' ]
-		}, {
 			test: /\.ts$/,
 			use: 'ts-loader'
 		}, {
@@ -78,19 +64,7 @@ module.exports = {
 						'data-cke': true
 					}
 				}
-			}, {
-				loader: 'css-loader'
-			}, {
-				loader: 'postcss-loader',
-				options: {
-					postcssOptions: styles.getPostCssConfig( {
-						themeImporter: {
-							themePath: require.resolve( '@ckeditor/ckeditor5-theme-lark' )
-						},
-						minify: true
-					} )
-				}
-			} ]
+			}, 'css-loader' ]
 		} ]
 	}
 };
