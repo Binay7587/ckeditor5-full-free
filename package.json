@@ -94,8 +94,7 @@
     "registry": "https://npm.pkg.github.com"
   },
   "dependencies": {
-    "ckeditor5": "49.0.0",
-    "ckeditor5-premium-features": "49.0.0"
+    "ckeditor5": "49.0.0"
   },
   "devDependencies": {
     "css-loader": "^7.1.2",

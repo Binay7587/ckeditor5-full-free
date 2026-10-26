@@ -33,9 +33,6 @@ module.exports = {
 		minimizer: [
 			new TerserWebpackPlugin( {
 				terserOptions: {
-					// CKEditor premium packages contain protected code that cannot be
-					// processed safely by Terser's compression transforms.
-					compress: false,
 					format: {
 						// Preserve CKEditor 5 license comments.
 						comments: /^!/

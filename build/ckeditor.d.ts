@@ -3,14 +3,26 @@
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 import { Alignment, Autoformat, AutoImage, AutoLink, Autosave, BlockQuote, Bold, ClassicEditor, CloudServices, Code, CodeBlock, Essentials, type EditorConfig, FindAndReplace, FontBackgroundColor, FontColor, FontFamily, FontSize, GeneralHtmlSupport, Heading, Highlight, HorizontalLine, HtmlComment, HtmlEmbed, Image, ImageCaption, ImageInsert, ImageResize, ImageStyle, ImageToolbar, ImageUpload, Indent, IndentBlock, Italic, Link, LinkImage, List, ListProperties, MediaEmbed, MediaEmbedToolbar, Mention, PageBreak, Paragraph, PasteFromMarkdownExperimental, PasteFromOffice, Plugin, RemoveFormat, SelectAll, ShowBlocks, SimpleUploadAdapter, SourceEditing, SpecialCharacters, SpecialCharactersArrows, SpecialCharactersCurrency, SpecialCharactersEssentials, SpecialCharactersLatin, SpecialCharactersMathematical, SpecialCharactersText, StandardEditingMode, Strikethrough, Style, Subscript, Superscript, Table, TableCaption, TableCellProperties, TableColumnResize, TableProperties, TableToolbar, TextTransformation, Underline, WordCount } from 'ckeditor5';
-import { ExportPdf, ExportWord } from 'ckeditor5-premium-features';
 import 'ckeditor5/ckeditor5.css';
-import 'ckeditor5-premium-features/ckeditor5-premium-features.css';
 /**
  * Enrich the special characters plugin with emojis.
  */
 declare class SpecialCharactersEmoji extends Plugin {
     static get pluginName(): "SpecialCharactersEmoji";
+    init(): void;
+}
+/**
+ * Prints the content, so the user can pick "Save as PDF" in the browser's print dialog.
+ */
+declare class ExportPdf extends Plugin {
+    static get pluginName(): "ExportPdf";
+    init(): void;
+}
+/**
+ * Downloads the content as an HTML-based .doc file, which Microsoft Word, LibreOffice and Google Docs open.
+ */
+declare class ExportWord extends Plugin {
+    static get pluginName(): "ExportWord";
     init(): void;
 }
 declare class Editor extends ClassicEditor {

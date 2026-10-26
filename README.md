@@ -72,7 +72,12 @@ ClassicEditor.create( {
 } );
 ```
 
-Export to Word and Export to PDF are retained for backward compatibility, but they are premium CKEditor features. Using them requires an eligible commercial license and converter authentication. See the [CKEditor licensing guide](https://ckeditor.com/docs/ckeditor5/latest/getting-started/licensing/license-key-and-activation.html) and the feature documentation for [Export to Word](https://ckeditor.com/docs/ckeditor5/latest/features/converters/export-word/export-word.html) and [Export to PDF](https://ckeditor.com/docs/ckeditor5/latest/features/converters/export-pdf/export-pdf.html).
+The `exportPdf` and `exportWord` toolbar buttons are free, browser-only replacements for CKEditor's premium export features, so they need no license key or converter token:
+
+- **Export to PDF** opens the browser's print dialog; choose "Save as PDF" as the destination.
+- **Export to Word** downloads the content as `document.doc`, an HTML-based file that Microsoft Word, LibreOffice and Google Docs open.
+
+The `exportPdf` and `exportWord` config options of the premium plugins (converter URL, options, file name) are no longer used.
 
 **Note:** For deep integrations, CKEditor recommends installing the framework and importing the required plugins directly. See the [customized installation guide](https://ckeditor.com/docs/ckeditor5/latest/getting-started/installation/self-hosted/quick-start.html).
 

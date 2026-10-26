@@ -11,6 +11,7 @@ import {
     Autosave,
     BlockQuote,
     Bold,
+    ButtonView,
     ClassicEditor,
     CloudServices,
     Code,
@@ -28,6 +29,8 @@ import {
     HorizontalLine,
     HtmlComment,
     HtmlEmbed,
+    IconExportPdf,
+    IconExportWord,
     Image,
     ImageCaption,
     ImageInsert,
@@ -77,10 +80,8 @@ import {
     Underline,
     WordCount
 } from 'ckeditor5';
-import { ExportPdf, ExportWord } from 'ckeditor5-premium-features';
 
 import 'ckeditor5/ckeditor5.css';
-import 'ckeditor5-premium-features/ckeditor5-premium-features.css';
 
 // You can read more about extending the build with additional plugins in the "Installing plugins" guide.
 // See https://ckeditor.com/docs/ckeditor5/latest/installation/plugins/installing-plugins.html for details.
@@ -219,6 +220,158 @@ class SpecialCharactersEmoji extends Plugin {
 
     public init(): void {
         this.editor.plugins.get('SpecialCharacters').addItems('Emoji', EMOJIS_ARRAY);
+    }
+}
+
+/**
+ * Free replacements for the premium Export to PDF/Word features, whose cloud converter requires a paid token.
+ * They keep the same plugin names and toolbar items so existing configs keep working.
+ */
+function addExportButton(plugin: Plugin, name: string, label: string, icon: string, onExecute: () => void): void {
+    plugin.editor.ui.componentFactory.add(name, locale => {
+        const button = new ButtonView(locale);
+
+        button.set({ label, icon, tooltip: true });
+        button.on('execute', onExecute);
+
+        return button;
+    });
+}
+
+// Inherited styles are inlined only where they change; box styles only where they are not the default.
+const INHERITED_PROPERTIES = [
+    'color', 'font-family', 'font-size', 'font-style', 'font-weight', 'line-height', 'list-style-type', 'text-align'
+];
+const BOX_PROPERTIES = [
+    'background-color', 'border-bottom', 'border-left', 'border-right', 'border-top', 'float', 'margin-bottom',
+    'margin-left', 'margin-right', 'margin-top', 'padding-bottom', 'padding-left', 'padding-right', 'padding-top',
+    'text-decoration-line', 'vertical-align'
+];
+const DEFAULT_VALUE = /^(0px|none|auto|normal|baseline|rgba\(0, 0, 0, 0\))/;
+
+/**
+ * Turns `rgb()`/`rgba()` colors into hex blended onto white, since Word doesn't reliably support either.
+ */
+function toHexColors(value: string): string {
+    return value.replace(/rgba?\(([^)]+)\)/g, (match, channels: string) => {
+        const [red, green, blue, alpha = 1] = channels.split(',').map(Number);
+
+        return '#' + [red, green, blue]
+            .map(channel => Math.round(channel * alpha + 255 * (1 - alpha)).toString(16).padStart(2, '0'))
+            .join('');
+    });
+}
+
+/**
+ * Renders the editor data in a hidden, A4-content-wide iframe with the page's styles and the editable's typography,
+ * so it lays out like the editor on a page. The iframe is sandboxed without scripts, so scripts in the content
+ * (e.g. from HTML embeds) never run.
+ */
+function renderData(editor: Plugin['editor'], onLoad: (iframe: HTMLIFrameElement, content: HTMLElement) => void): void {
+    const editableStyle = getComputedStyle(editor.ui.getEditableElement()!);
+    const typography = INHERITED_PROPERTIES
+        .map(property => `${property}:${toHexColors(editableStyle.getPropertyValue(property))}`)
+        .join(';');
+    const styles = Array.from(document.querySelectorAll('style, link[rel="stylesheet"]'))
+        .map(element => element.outerHTML)
+        .join('');
+    const iframe = document.createElement('iframe');
+
+    iframe.setAttribute('sandbox', 'allow-same-origin allow-modals');
+    // 186mm is A4's width minus the 12mm side margins set by `@page` below.
+    iframe.style.cssText = 'position:fixed;left:-10000px;top:0;width:186mm;height:0;border:0;';
+    iframe.srcdoc = '<!doctype html><html><head><meta charset="utf-8"><title>document</title>' + styles +
+        '<style>@page{margin:20mm 12mm}html,body{margin:0;padding:0;background:none}</style></head>' +
+        `<body><div class="ck-content" style="${typography.replace(/"/g, '&quot;')}">` +
+        editor.getData() + '</div></body></html>';
+    iframe.onload = () => onLoad(iframe, iframe.contentDocument!.body.firstElementChild as HTMLElement);
+
+    document.body.appendChild(iframe);
+}
+
+/**
+ * Copies the computed styles into inline styles, because Word ignores stylesheets and CKEditor's content classes.
+ */
+function inlineStyles(content: HTMLElement): void {
+    const view = content.ownerDocument.defaultView!;
+
+    for (const element of Array.from(content.querySelectorAll<HTMLElement>('*'))) {
+        const style = view.getComputedStyle(element);
+        const parentStyle = view.getComputedStyle(element.parentElement!);
+        const properties = [
+            ...INHERITED_PROPERTIES.filter(property =>
+                style.getPropertyValue(property) !== parentStyle.getPropertyValue(property)),
+            ...BOX_PROPERTIES.filter(property => !DEFAULT_VALUE.test(style.getPropertyValue(property)))
+        ];
+        const declarations = properties.map(property => `${property}:${toHexColors(style.getPropertyValue(property))}`);
+
+        // Set as text, because `style.setProperty()` would turn the hex colors back into `rgb()`.
+        if (declarations.length) {
+            element.setAttribute('style', [element.getAttribute('style'), ...declarations].filter(Boolean).join(';'));
+        }
+    }
+
+    // Word sizes and floats images by attributes and needs absolute URLs, as the file is opened outside the page.
+    for (const image of Array.from(content.querySelectorAll('img'))) {
+        const float = view.getComputedStyle(image.closest('figure') || image).float;
+
+        image.setAttribute('src', image.src);
+        image.width = Math.round(image.getBoundingClientRect().width);
+        image.height = Math.round(image.getBoundingClientRect().height);
+
+        if (float === 'left' || float === 'right') {
+            image.align = float;
+        }
+    }
+
+    for (const link of Array.from(content.querySelectorAll('a'))) {
+        link.setAttribute('href', link.href);
+    }
+}
+
+/**
+ * Prints the content, so the user can pick "Save as PDF" in the browser's print dialog.
+ */
+class ExportPdf extends Plugin {
+    public static get pluginName() {
+        return 'ExportPdf' as const;
+    }
+
+    public init(): void {
+        addExportButton(this, 'exportPdf', 'Export to PDF', IconExportPdf, () => {
+            renderData(this.editor, iframe => {
+                iframe.contentWindow!.addEventListener('afterprint', () => iframe.remove());
+                iframe.contentWindow!.print();
+            });
+        });
+    }
+}
+
+/**
+ * Downloads the content as an HTML-based .doc file, which Microsoft Word, LibreOffice and Google Docs open.
+ */
+class ExportWord extends Plugin {
+    public static get pluginName() {
+        return 'ExportWord' as const;
+    }
+
+    public init(): void {
+        addExportButton(this, 'exportWord', 'Export to Word', IconExportWord, () => {
+            renderData(this.editor, (iframe, content) => {
+                inlineStyles(content);
+
+                const html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" ' +
+                    'xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"></head>' +
+                    '<body>' + content.outerHTML + '</body></html>';
+                const link = document.createElement('a');
+
+                link.href = URL.createObjectURL(new Blob(['﻿', html], { type: 'application/msword' }));
+                link.download = 'document.doc';
+                link.click();
+                setTimeout(() => URL.revokeObjectURL(link.href));
+                iframe.remove();
+            });
+        });
     }
 }
 
@@ -403,8 +556,6 @@ class Editor extends ClassicEditor {
     ];
 
     public static override defaultConfig: EditorConfig = {
-        // Consumers using Export to PDF/Word must override this with a commercial
-        // self-hosted license key that includes those premium features.
         licenseKey: 'GPL',
         toolbar: {
             shouldNotGroupWhenFull: true,
@@ -646,41 +797,6 @@ class Editor extends ClassicEditor {
                 'tableCellProperties',
                 'toggleTableCaption',
             ],
-        },
-        exportPdf: {
-            stylesheets: [
-                'https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500&display=swap',
-                'https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap',
-            ],
-            fileName: 'document.pdf',
-            converterOptions: {
-                document: {
-                    size: 'A4',
-                    orientation: 'portrait',
-                    margins: {
-                        top: '20mm',
-                        bottom: '20mm',
-                        right: '12mm',
-                        left: '12mm'
-                    }
-                }
-            },
-            converterUrl: 'https://pdf-converter.cke-cs.com/v2/convert/html-pdf',
-        },
-        exportWord: {
-            converterUrl: 'https://docx-converter.cke-cs.com/v2/convert/html-docx',
-            fileName: 'document.docx',
-            converterOptions: {
-                document: {
-                    size: 'A4',
-                    margins: {
-                        top: '20mm',
-                        bottom: '20mm',
-                        right: '12mm',
-                        left: '12mm'
-                    }
-                }
-            }
         },
         // This value must be kept in sync with the language defined in webpack.config.js.
         language: 'en',
